@@ -12,3 +12,15 @@ model = dict(
 #    decode_head=dict(in_channels=[128, 256, 512, 1024], num_classes=150),
 #    auxiliary_head=dict(in_channels=512, num_classes=150)
             )
+find_unused_parameters = True
+
+
+#data = dict(samples_per_gpu=8, # it means 4 batch sizes are used in one GPU
+#            workers_per_gpu=1,)
+
+train_dataloader = dict(batch_size=8, 
+                        num_workers=1,)
+val_dataloader = dict(  batch_size=1, 
+                        num_workers=1,)
+test_dataloader = val_dataloader
+

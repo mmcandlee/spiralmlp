@@ -2,6 +2,10 @@ _base_ = [
     '../_base_/models/upernet_spiral.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
+#_base_ = [
+#    '../_base_/models/upernet_spiral.py', '../_base_/datasets/ade20k.py',
+#    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+#]
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 checkpoint_file = './mumu_pretrained/spiral_b1_300.pth'
@@ -12,14 +16,15 @@ model = dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
         embed_dims=64,
         depths=[2, 2, 4, 2],
-        # num_layers => depths
+# num_layers => depths
 #        num_heads=[3, 6, 12, 24],
 #        window_size=7,
 #        use_abs_pos_embed=False,
 #        drop_path_rate=0.3,
-#        patch_norm=True
-                        ),
+#        patch_norm=True),
+        ), 
     decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=150),
+# when using fpn, stop it
     auxiliary_head=dict(in_channels=384, num_classes=150))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
@@ -46,8 +51,7 @@ param_scheduler = [
         begin=1500,
         end=160000,
         by_epoch=False,
-    )
-]
+    )]
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 train_dataloader = dict(batch_size=2)
